@@ -17,10 +17,10 @@ export default class Profile extends React.Component {
     
     render() {
     return (
-    <View style={styles.wrapper} >
+    <View style={styles.appContainer} >
         
         <View style={styles.containerHeader}>
-            <Text style={styles.header}> - Project Lists - </Text>
+            <Text style={styles.headerText}> - Project Lists - </Text>
         </View>
 
         <View style={styles.listContainer}>
@@ -32,7 +32,7 @@ export default class Profile extends React.Component {
             />
         </View>
        
-        <View style={styles.container}>
+        <View style={styles.containerBtn}>
             <TouchableOpacity style={styles.btn} onPress={this.logout}>
                 <Text>Log Out</Text>
             </TouchableOpacity>
@@ -88,42 +88,27 @@ export default class Profile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
+    appContainer: {
        flex: 1, 
-       flexDirection: 'column',
-       flexWrap: 'wrap',
        backgroundColor: 'white',
-       alignContent: 'center'
-    },
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-        paddingLeft: 40,
-        paddingRight: 40,
-        alignContent: 'center',
-        paddingTop: 15
- 
+       alignSelf: 'stretch',
     },
     containerHeader: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-        paddingLeft: 40,
-        paddingRight: 40,
         alignItems: 'center',
-        top: 40
+        height: 90,
+        justifyContent: 'flex-end',
+        paddingBottom: 15,
+    },
+    headerText: {
+        fontSize: 24,
+        color: 'black',
     },
     listContainer: {
-        flex: 5,
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-        alignSelf: 'stretch',
+        flex: 6,
     },
-    header: {
-        fontSize: 24,
-        marginBottom: 60,
-        color: 'black',
+    containerBtn: {
+        flex: 0,
+        justifyContent: 'flex-end'
     },
     btn: {
         alignSelf: 'stretch',
