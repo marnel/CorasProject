@@ -48,7 +48,9 @@ export default class Profile extends React.Component {
 
   getAppLists = () => {
     let self = this;
-    fetch('https://dev.coras.com/odata/Connections(\'E3CC8646-243C-4D95-BD84-67224112411D\')/Lists?$orderby=Title&$select=Title,+Id',{
+    //Projects Call: 'https://dev.coras.com/odata/Connections(\'E3CC8646-243C-4D95-BD84-67224112411D\')/Lists?$orderby=Title&$select=Title,+Id'
+    //Tasks Call: https://dev.coras.com/odata/Connections('E3CC8646-243C-4D95-BD84-67224112411D')/Lists('5a4cbf9b-1996-4ace-9a00-51115b6c6e87')/ListItems?%24top=25000&%24orderby=Title&%24filter=AssignedTo%2Fany(s%3A+s%2FId+eq+%27dd836a5c-5fef-4a97-8e1d-7734a59ebddb%27)&%24count=true&_=1514645954783
+    fetch('https://dev.coras.com/odata/Connections(\'E3CC8646-243C-4D95-BD84-67224112411D\')/Lists(\'5a4cbf9b-1996-4ace-9a00-51115b6c6e87\')/ListItems?%24top=25000&%24orderby=Title&%24filter=AssignedTo%2Fany(s%3A+s%2FId+eq+%27dd836a5c-5fef-4a97-8e1d-7734a59ebddb%27)&%24count=true',{
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -60,7 +62,7 @@ export default class Profile extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-        console.log(responseJson)
+        //console.log(responseJson)
         self.setState({
           //isLoading: false,
           dataSource: responseJson.value,
