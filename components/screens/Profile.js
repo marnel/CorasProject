@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import ListItem  from '../widgets/ListItem'
 
 export default class Profile extends React.Component {
   
@@ -26,7 +27,7 @@ export default class Profile extends React.Component {
         <View style={styles.listContainer}>
             <FlatList style={{ backgroundColor: 'white'}}
             data={this.state.dataSource}
-            renderItem={({item}) => <Text style={styles.item}>{item.Title}</Text>}
+            renderItem={({item}) => <ListItem item={item} /> }
             keyExtractor={(item, index) => item.Id}
             ItemSeparatorComponent={this.renderSeparator}
             />
