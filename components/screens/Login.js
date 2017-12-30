@@ -61,7 +61,8 @@ export default class Login extends React.Component {
               'Accept': 'application/json',
               'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: 'username=' + this.state.username + '&password=' + this.state.password + '&grant_type=password'
+          //body: 'username=' + this.state.username + '&password=' + this.state.password + '&grant_type=password'
+          body: 'username=michael.arnel@coras.com&password=G3tcoras1&grant_type=password'
       })
       .then((response) => response.json())
       .then((res) => {
