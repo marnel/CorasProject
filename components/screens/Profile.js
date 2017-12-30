@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import ListItem  from '../widgets/ListItem'
 
 export default class Profile extends React.Component {
@@ -8,7 +8,8 @@ export default class Profile extends React.Component {
         super();
        
         this.state = {
-            dataSource:  [{Title: '', Id: 0}]
+            dataSource: null,
+            isAnimating: false,
         }
     }
 
@@ -17,29 +18,36 @@ export default class Profile extends React.Component {
     }
     
     render() {
-    return (
-    <View style={styles.appContainer} >
-        
-        <View style={styles.containerHeader}>
-            <Text style={styles.headerText}> - Project Lists - </Text>
-        </View>
+    
+    if (this.state.dataSource !== null) {
+        return (
+        <View style={styles.appContainer} >
+            
+            <View style={styles.containerHeader}>
+                <Text style={styles.headerText}> My Work </Text>
+            </View>
 
-        <View style={styles.listContainer}>
-            <FlatList style={{ backgroundColor: 'white'}}
-            data={this.state.dataSource}
-            renderItem={({item}) => <ListItem item={item} /> }
-            keyExtractor={(item, index) => item.Id}
-            ItemSeparatorComponent={this.renderSeparator}
-            />
+            <View style={styles.listContainer}>
+                <FlatList style={{ backgroundColor: 'white'}}
+                data={this.state.dataSource}
+                renderItem={({item}) => <ListItem item={item} /> }
+                keyExtractor={(item, index) => item.Id}
+                ItemSeparatorComponent={this.renderSeparator}
+                />
+            </View>
+        
+            <View style={styles.containerBtn}>
+                <TouchableOpacity style={styles.btn} onPress={this.logout}>
+                    <Text>Log Out</Text>
+                </TouchableOpacity>
+            </View>
         </View>
-       
-        <View style={styles.containerBtn}>
-            <TouchableOpacity style={styles.btn} onPress={this.logout}>
-                <Text>Log Out</Text>
-            </TouchableOpacity>
-        </View>
-    </View>
-    )
+        )
+    }
+    else 
+    {
+        return <ActivityIndicator />
+    }
   }
 
   logout = () => {
