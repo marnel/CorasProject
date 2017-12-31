@@ -17,7 +17,7 @@ export default class ListItem extends React.Component {
         var swipeoutBtns = [
             {
                 component: new ImageButton('done', 'green'),
-                onPress: this.btnCompleteClick.bind(this),
+                onPress: this.btnCompleteClick,
                 backgroundColor: '#eaebed'
             },
             {
@@ -49,18 +49,48 @@ export default class ListItem extends React.Component {
         )
     }
 
-    btnCompleteClick(){
-        alert('test')
-        alert(JSON.stringify(this.props.item.Project.Title))
-        alert(this.props.item.Title + ' ' + this.props.item.Id)
+    btnCompleteClick =() => {
+       // alert(this.props.item.Project.Title)
+       //alert(this.props.token)
+        this.props.item.TaskStatusR_1508195821838 = 'Completed'
+        this._markItemComplete(this.props.item)
+        //alert(JSON.stringify(this.props.item.Project.Title))
+        //alert(this.props.item.Title + ' ' + this.props.item.Id)
     }
 
-    _getDateString(date){
+    _getDateString = (date) => {
         const d = moment(date)
         if (d.isAfter(new Date(1900, 1, 1))){
             return 'due ' + moment(d).format('MM/DD/YYYY')
         }
         return ''
+    }
+
+    _markItemComplete = (item) => {
+        console.log(item)
+        let self = this;
+        fetch('https://dev.coras.com/odata/Connections(\'E3CC8646-243C-4D95-BD84-67224112411D\')/Lists(\'5a4cbf9b-1996-4ace-9a00-51115b6c6e87\')/ListItems(\'' + item.Id + '\')',{
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;odata',
+            'AppId': 'cd57ab8b-e226-44fb-89d9-c7eb571ae864',
+            'Authorization': 'Bearer ' + this.props.token,
+            'IF-Match': '*'
+        },
+        body: JSON.stringify(item)
+        
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            alert(JSON.stringify(responseJson))
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+        .done(() => {
+            
+        })
     }
 }
 

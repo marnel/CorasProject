@@ -1,18 +1,19 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import Navigator from './components/Navigator';
+import React from 'react'
+import { StackNavigator } from 'react-navigation'
+import Navigator from './components/Navigator'
+import { Provider as MobXProvider, observer } from 'mobx-react/native'
+import Store from './stores/store'
 
-export default class App extends React.Component {
+const store = new Store();
+
+export default observer(class App extends React.Component {
   render() {
     return (
-      <Navigator />
+      <MobXProvider store={store}>
+        <Navigator />
+      </MobXProvider>
     );
   }
-}
+})
 
-const styles = StyleSheet.create({
-  container: {
-   
-  },
-});
+

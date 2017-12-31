@@ -1,8 +1,12 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, ToolbarAndroid } from 'react-native'
 import ListItem  from '../widgets/ListItem'
+import { Icon } from 'react-native-elements'
+import { observer, inject } from 'mobx-react'
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 
-export default class Profile extends React.Component {
+
+class Profile extends React.Component {
   
     constructor() {
         super();
@@ -19,18 +23,23 @@ export default class Profile extends React.Component {
     
     render() {
     
-    if (this.state.dataSource !== null) {
+    if (this.props.store.itemsDS !== null){
+        console.log(imgSrc)
         return (
         <View style={styles.appContainer} >
-            
+
             <View style={styles.containerHeader}>
-                <Text style={styles.headerText}> My Work </Text>
+                <ToolbarAndroid title={this.props.store.item} 
+                                style={{backgroundColor: '#2c97dd', height: 58}} 
+                                titleColor="white"
+                                actions={[{title: 'Settings', show: 'never'}, {title: 'Settings 2', show: 'never'}]}
+                />
             </View>
 
             <View style={styles.listContainer}>
                 <FlatList style={{ backgroundColor: 'white'}}
-                data={this.state.dataSource}
-                renderItem={({item}) => <ListItem item={item} /> }
+                data={this.props.store.itemsDS}
+                renderItem={({item}) => <ListItem item={item} token={this.props.navigation.state.params.access_token} /> }
                 keyExtractor={(item, index) => item.Id}
                 ItemSeparatorComponent={this.renderSeparator}
                 />
@@ -74,7 +83,9 @@ export default class Profile extends React.Component {
           dataSource: responseJson.value,
         }, function() {
           // do something with new state
-        });
+        })
+        this.props.store.itemsDS = responseJson.value
+        this.props.store.item += ' (LOADED)'
       })
       .catch((error) => {
         console.error(error);
@@ -95,6 +106,9 @@ export default class Profile extends React.Component {
     );
   };
 }
+Profile = inject('store')(observer(Profile))
+export default Profile
+
 
 const styles = StyleSheet.create({
     appContainer: {
@@ -103,10 +117,9 @@ const styles = StyleSheet.create({
        alignSelf: 'stretch',
     },
     containerHeader: {
-        alignItems: 'center',
-        height: 90,
+        height: 87,
         justifyContent: 'flex-end',
-        paddingBottom: 15,
+        paddingBottom: 5,
     },
     headerText: {
         fontSize: 24,
