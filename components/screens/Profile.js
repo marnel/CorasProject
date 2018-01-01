@@ -4,6 +4,7 @@ import ListItem  from '../widgets/ListItem'
 import { Icon } from 'react-native-elements'
 import { observer, inject } from 'mobx-react'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
+import _ from 'lodash'
 
 
 class Profile extends React.Component {
@@ -24,7 +25,6 @@ class Profile extends React.Component {
     render() {
     
     if (this.props.store.itemsDS !== null){
-        console.log(imgSrc)
         return (
         <View style={styles.appContainer} >
 
@@ -32,7 +32,11 @@ class Profile extends React.Component {
                 <ToolbarAndroid title={this.props.store.item} 
                                 style={{backgroundColor: '#2c97dd', height: 58}} 
                                 titleColor="white"
-                                actions={[{title: 'Settings', show: 'never'}, {title: 'Settings 2', show: 'never'}]}
+                                actions={[{title: 'Sort: Due Date (ASC)', show: 'never'}, 
+                                          {title: 'Sort: Due Date (DESC)', show: 'never'},
+                                          {title: 'Sort: Title (ASC)', show: 'never'},
+                                          {title: 'Sort: Title (DESC)', show: 'never'}]}
+                                onActionSelected={this.onActionSelected} 
                 />
             </View>
 
@@ -56,6 +60,29 @@ class Profile extends React.Component {
     else 
     {
         return <ActivityIndicator />
+    }
+  }
+
+  onActionSelected = (position) => {
+    // Sort Due Date ASC
+    if (position === 0){
+        let newOrder = _.orderBy(this.props.store.itemsDS,['EndDate'],['asc'])
+        this.props.store.itemsDS = newOrder
+    }
+    // Sort Due Date DESC
+    if (position === 1){
+        let newOrder = _.orderBy(this.props.store.itemsDS,['EndDate'],['desc'])
+        this.props.store.itemsDS = newOrder
+    }
+    // Sort Title ASC
+    else if (position === 2){
+        let newOrder = _.orderBy(this.props.store.itemsDS,['Title'],['asc'])
+        this.props.store.itemsDS = newOrder
+    }
+    // Sort Title ASC
+    else if (position === 3){
+        let newOrder = _.orderBy(this.props.store.itemsDS,['Title'],['desc'])
+        this.props.store.itemsDS = newOrder
     }
   }
 
@@ -85,7 +112,6 @@ class Profile extends React.Component {
           // do something with new state
         })
         this.props.store.itemsDS = responseJson.value
-        this.props.store.item += ' (LOADED)'
       })
       .catch((error) => {
         console.error(error);
